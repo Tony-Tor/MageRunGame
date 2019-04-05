@@ -5,11 +5,12 @@
  */
 package mygame.path;
 
-import com.jme3.math.Transform;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.List;
+import mygame.enemy.Enemy;
+import mygame.enemy.EnemyFactory;
 import mygame.enemy.PointEnemy;
 
 /**
@@ -30,6 +31,7 @@ public class CellFactory {
         this.cell = new Node();
         List<WrapPathPointer> list_pp = new ArrayList<>();
         List<WrapEnd> list_end = new ArrayList<>();
+        this.points = new ArrayList<>();
         
         Node scene = (Node) cell.getChild("Scene");
         
@@ -58,6 +60,13 @@ public class CellFactory {
             //if spatial is mesh 
             if(spatial.getName().startsWith("Mesh")){
                 this.cell.attachChild(spatial);
+            }
+            
+            if(spatial.getName().startsWith("Enemy")){
+                String[] data_object = spatial.getName().split("/");
+                int i = Integer.valueOf(data_object[1]);
+                PointEnemy pe = new PointEnemy(spatial.getLocalTransform(), i);
+                points.add(pe);
             }
         }
         
@@ -95,7 +104,12 @@ public class CellFactory {
         new_cell.setLocalTransform(pos.getLocalTransform());
         TreePath new_tp = tree_path.clone(pos);
         
-        return new Cell(new_cell, new_tp, null, this.type);
+        List<Enemy> enemes = new ArrayList<>();
+        for(PointEnemy pe: points){
+            enemes.add(EnemyFactory.enemyFactory.createEnemy(pe.transform.clone().combineWithParent(pos.getLocalTransform())));
+        }
+        
+        return new Cell(new_cell, new_tp, enemes, this.type);
     }
     
     private class WrapPathPointer{
