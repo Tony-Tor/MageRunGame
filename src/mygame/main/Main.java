@@ -189,7 +189,7 @@ public class Main extends SimpleApplication {
         
         test_path4.setLocalTranslation(control_path.getNext(shift));
         
-        for(Enemy e: Enemy.enemes){
+        /*for(Enemy e: Enemy.enemes){
             test_path2.setLocalTranslation(e.az.pos);
             int k = e.az.isCollision(mage_player.getLocalTranslation(), 3);
             //System.out.println(mage_player.getLocalTranslation());
@@ -197,7 +197,7 @@ public class Main extends SimpleApplication {
                 count_collision++;
                 System.out.println("Collision in Sector = " + k + " " + count_collision);
             }
-        }
+        }*/
         
         
         test_path2.setLocalScale(0.4f);

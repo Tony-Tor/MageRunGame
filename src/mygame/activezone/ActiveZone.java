@@ -56,4 +56,10 @@ public class ActiveZone {
     public void rotate(Quaternion quat){
         quat.toRotationMatrix().mult(this.direction);
     }
+    
+    public void setPosition(Transform t){
+        this.pos = t.getTranslation();
+        this.direction = new Vector3f(Vector3f.UNIT_Z);
+        t.getRotation().toRotationMatrix().mult(this.direction);
+    }
 }

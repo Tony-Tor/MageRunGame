@@ -106,7 +106,7 @@ public class CellFactory {
         
         List<Enemy> enemes = new ArrayList<>();
         for(PointEnemy pe: points){
-            enemes.add(EnemyFactory.enemyFactory.createEnemy(pe.transform.clone().combineWithParent(pos.getLocalTransform())));
+            //enemes.add(EnemyFactory.enemyFactory.createEnemy(pe.transform.clone().combineWithParent(pos.getLocalTransform())));
         }
         
         return new Cell(new_cell, new_tp, enemes, this.type);
