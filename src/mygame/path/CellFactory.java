@@ -5,13 +5,14 @@
  */
 package mygame.path;
 
+import com.jme3.math.Transform;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.enemy.Enemy;
-import mygame.enemy.EnemyFactory;
 import mygame.enemy.PointEnemy;
+import mygame.generator.GeneratorEnemy;
 
 /**
  *
@@ -106,7 +107,8 @@ public class CellFactory {
         
         List<Enemy> enemes = new ArrayList<>();
         for(PointEnemy pe: points){
-            //enemes.add(EnemyFactory.enemyFactory.createEnemy(pe.transform.clone().combineWithParent(pos.getLocalTransform())));
+            Transform t = pe.transform.clone().combineWithParent(pos.getLocalTransform());
+            enemes.add(GeneratorEnemy.generator_enemy.get(pe.type, t));
         }
         
         return new Cell(new_cell, new_tp, enemes, this.type);

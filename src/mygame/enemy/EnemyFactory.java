@@ -6,6 +6,7 @@
 package mygame.enemy;
 
 import com.jme3.math.Transform;
+import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.activezone.ActiveZone;
@@ -17,28 +18,31 @@ import mygame.activezone.Sector;
  */
 public abstract class EnemyFactory {
     
-    public List<Sector> sectors;
+    public List<ActiveZone> active_zone;
     public static List<EnemyFactory> enemyFactores = new ArrayList<>();
+    public Node enemy_node;
     
-    public EnemyFactory(){
+    public EnemyFactory(Node enemy){
         enemyFactores.add(this);
-        sectors = new ArrayList<>();
-        sectors.add(new Sector(0, 0, 0.785f));
-        sectors.add(new Sector(1, 0.785f, 5.495f));
-        sectors.add(new Sector(0, 5.495f, Sector.PI_2));
+        active_zone = new ArrayList<>();
+        this.enemy_node = enemy;
+    }
+    
+    public void addActiveZone(ActiveZone az){
+        active_zone.add(az);
     }
     
     public Enemy createEnemy(Transform t){
-        ActiveZone az = new ActiveZone(t, 3);
-        az.sectors = sectors;
         final EnemyFactory ef = this;
-        Enemy enemy = new Enemy(t) {
+        Enemy enemy = new Enemy(t, enemy_node) {
             @Override
             public void update(float tpf) {
                 ef.update(tpf, this);
             }
         };
-        enemy.addActivZone(az);
+        for(ActiveZone az: active_zone){
+            enemy.addActivZone(az);
+        }
         return enemy;
     }
     

@@ -12,6 +12,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.CameraNode;
@@ -19,7 +20,10 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.CameraControl;
 import java.util.ArrayList;
 import java.util.List;
+import mygame.activezone.ActiveZone;
+import mygame.activezone.Sector;
 import mygame.enemy.Enemy;
+import mygame.enemy.EnemyFactory;
 import mygame.path.CellFactory;
 import mygame.path.ControlPath;
 import mygame.generator.Generator;
@@ -93,8 +97,40 @@ public class Main extends SimpleApplication {
         Node spatial2 = (Node) assetManager.loadModel("Models/Road3.j3o");
         cells.add(new CellFactory(spatial2, 2));
         //rootNode.attachChild(spatial);
+        Node enemy = (Node) assetManager.loadModel("Models/Enemy.j3o");
+        Node arrow = (Node) assetManager.loadModel("Models/Arrow.j3o");
         
+        EnemyFactory ef1 = new EnemyFactory(enemy) {
+            @Override
+            public void update(float tpf, Enemy e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        ActiveZone az1 = new ActiveZone(Transform.IDENTITY, 2);
+        az1.addSector(new Sector(1, 0, 0.7854f));
+        az1.addSector(new Sector(0, 0.7854f, 5.4978f));
+        az1.addSector(new Sector(1, 5.4978f, Sector.PI_2));
+        ef1.addActiveZone(az1);
         
+        EnemyFactory ef2 = new EnemyFactory(enemy) {
+            @Override
+            public void update(float tpf, Enemy e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        ActiveZone az2 = new ActiveZone(Transform.IDENTITY, 2);
+        az2.addSector(new Sector(0, 0, Sector.PI_2));
+        ef2.addActiveZone(az2);
+        
+        EnemyFactory ef3 = new EnemyFactory(arrow) {
+            @Override
+            public void update(float tpf, Enemy e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        ActiveZone az3 = new ActiveZone(Transform.IDENTITY, 0.5f);
+        az3.addSector(new Sector(1, 0, Sector.PI_2));
+        ef3.addActiveZone(az3);
         
         rootNode.attachChild(test_path);
         rootNode.attachChild(test_path1);
