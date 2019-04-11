@@ -53,7 +53,10 @@ public abstract class Enemy {
         List<Enemy> for_remove = new ArrayList<>();
         for(Enemy e: enemes){
             enemes_node.detachChild(e.w_pos);
-            if(!e.isAlive) for_remove.add(e);
+            if(!e.isAlive){
+                for_remove.add(e);
+                System.err.println(e);
+            }
         }
         
         for(Enemy e: for_remove){

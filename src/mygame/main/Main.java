@@ -103,7 +103,20 @@ public class Main extends SimpleApplication {
         EnemyFactory ef1 = new EnemyFactory(enemy) {
             @Override
             public void update(float tpf, Enemy e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if(e.state.floats.isEmpty())e.state.floats.add(1f);
+                int r = e.azs.get(0).isCollision(mage_player.getLocalTranslation(), 2);
+                if(r != -1) System.err.println("Type 1");
+                if(r == 0) e.isAlive = false;
+                if(r == 1) System.err.println("Game Over");
+                float x = e.l_pos.getLocalTranslation().x;
+                System.err.println(e.l_pos.getLocalTranslation());
+                if(x <= 6 && x >= -6)e.l_pos.setLocalTranslation(x + tpf * e.state.floats.get(0) * 10, 0, 0);
+                else {
+                    if(x >= 6)e.l_pos.setLocalTranslation(6, 0, 0);
+                    if(x <= -6)e.l_pos.setLocalTranslation(-6, 0, 0);
+                    e.state.floats.set(0, e.state.floats.get(0) * -1);
+                }
+                e.updateActiveZone();
             }
         };
         ActiveZone az1 = new ActiveZone(Transform.IDENTITY, 2);
@@ -115,7 +128,10 @@ public class Main extends SimpleApplication {
         EnemyFactory ef2 = new EnemyFactory(enemy) {
             @Override
             public void update(float tpf, Enemy e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                int r = e.azs.get(0).isCollision(mage_player.getLocalTranslation(), 2);
+                if(r != -1) System.err.println("Type 2");
+                if(r == 0) e.isAlive = false;
+                e.updateActiveZone();
             }
         };
         ActiveZone az2 = new ActiveZone(Transform.IDENTITY, 2);
@@ -136,6 +152,7 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(test_path1);
         rootNode.attachChild(test_path2);
         rootNode.attachChild(test_path4);
+        rootNode.attachChild(Enemy.enemes_node);
         gen = new Generator(mage_player, cells);
         rootNode.attachChild(gen.getWorld());
         control_path = new ControlPath(mage_player, gen.getPath());
@@ -225,15 +242,10 @@ public class Main extends SimpleApplication {
         
         test_path4.setLocalTranslation(control_path.getNext(shift));
         
-        /*for(Enemy e: Enemy.enemes){
-            test_path2.setLocalTranslation(e.az.pos);
-            int k = e.az.isCollision(mage_player.getLocalTranslation(), 3);
-            //System.out.println(mage_player.getLocalTranslation());
-            if(k != -1){
-                count_collision++;
-                System.out.println("Collision in Sector = " + k + " " + count_collision);
-            }
-        }*/
+        for(Enemy e: Enemy.enemes){
+            e.update(tpf);
+        }
+        Enemy.removeNotAlive();
         
         
         test_path2.setLocalScale(0.4f);
