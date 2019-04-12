@@ -165,13 +165,13 @@ public class Main extends SimpleApplication {
     }
     
     private void init(){
-        flyCam.setEnabled(false);
+        flyCam.setEnabled(true);
         flyCam.setMoveSpeed(100);
-        camNode = new CameraNode("CamNode", cam);
+        /*camNode = new CameraNode("CamNode", cam);
         camNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
         camNode.setLocalTranslation(new Vector3f(0, 4, -6));
         camNode.lookAt(new Vector3f(0, 0, 16).add(mage_player.getLocalTranslation()), Vector3f.UNIT_Y);
-        mage_player.attachChild(camNode);
+        mage_player.attachChild(camNode);*/
         viewPort.setBackgroundColor(new ColorRGBA(0.8f, 0.8f, 1f, 1));
     }
     
@@ -231,7 +231,7 @@ public class Main extends SimpleApplication {
         
         gen.update();
         
-        control_path.update(tpf*10, shift);
+        control_path.update(tpf*10, 0);
         
         //System.out.println(" Forward: = " + control_path.getForward() + " ForwardPrev: = " + control_path.getForwardPrev()+ " Current: = " + control_path.getCurrent());
         

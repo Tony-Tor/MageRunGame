@@ -62,4 +62,10 @@ public class ActiveZone {
         this.direction = new Vector3f(Vector3f.UNIT_Z);
         t.getRotation().toRotationMatrix().mult(this.direction);
     }
+    
+    public ActiveZone copy(){
+        ActiveZone az = new ActiveZone(Transform.IDENTITY, size);
+        az.sectors = sectors;
+        return az;
+    }
 }

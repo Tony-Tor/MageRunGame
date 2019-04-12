@@ -41,7 +41,7 @@ public abstract class EnemyFactory {
             }
         };
         for(ActiveZone az: active_zone){
-            enemy.addActivZone(az);
+            enemy.addActivZone(az.copy());
         }
         return enemy;
     }

@@ -110,11 +110,16 @@ public class Tree<T> {
         }
     }
     
-    public void removeFromParent() {
-        //System.out.println(TAG + this + " " + "Remove from parent");
-		//Objects.requireNonNull(parent);
-		if(parent != null)parent.children.remove(this);
-		parent = null;
+    public void remove(Tree<T> t) {
+        if(children != null){
+            for(Tree<T> p: children){
+                if(p != t) p.remove(null);
+                p.parent = null;
+            }
+        }
+        
+        children = null;
+        content = null;
     }
     
     public Tree clone(Tree parent){

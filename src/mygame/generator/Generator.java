@@ -14,6 +14,7 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import mygame.enemy.Enemy;
 
 /**
  *
@@ -82,7 +83,32 @@ public class Generator {
         for(Tree<Cell> cell: all_cells){
             node.attachChild(cell.getContent().getCell());
             if(cell.getContent().isCurrent(player.getLocalTranslation())){
-                if(cell.getParent()!= null){current = cell.getParent();
+                if(cell.getParent()!= null){
+                    current = cell.getParent();
+                    
+                    
+                    if(current.getParent() != null){
+                        Tree<Cell> pc = current.getParent();
+                        if(pc.getChildren() != null){
+                            for(Tree<Cell> c: pc.getChildren()){
+                                if(c != current){
+                                    for(Enemy e: c.getContent().enemes){
+                                        e.isAlive = false;
+                                    }
+                                }
+                            }
+                        }
+                        if(pc.getParent() != null){
+                            if(pc.getParent().getContent() != null){
+                                for(Enemy e: pc.getParent().getContent().enemes){
+                                        e.isAlive = false;
+                                }
+                            }
+                        }
+                        if(pc.getParent() != null)pc.getParent().remove(pc);
+                    }
+                    
+                    
                     //current.removeFromParent();
                 }
             }
