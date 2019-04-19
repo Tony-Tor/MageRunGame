@@ -17,8 +17,8 @@ import java.util.List;
  * @author anton
  */
 public class PathPoint implements IPathPoint{
-    protected Node w_pos;
-    private Node l_pos;
+    public Node w_pos;
+    public Node l_pos;
     private static final String TAG = "PathPoint: ";
     
     public PathPoint(Transform t){
@@ -32,9 +32,15 @@ public class PathPoint implements IPathPoint{
     }
     
     @Override
-    public Vector3f getVector(){
+    public Vector3f getVectorLocal(){
         //System.out.println(TAG + this + " " + "Get Vector");
         return l_pos.getWorldTranslation();
+    }
+    
+    @Override
+    public Vector3f getVectorWorld(){
+        //System.out.println(TAG + this + " " + "Get Vector");
+        return w_pos.getWorldTranslation();
     }
     
     @Override

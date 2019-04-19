@@ -14,7 +14,8 @@ import com.jme3.scene.Node;
  * @author anton
  */
 public interface IPathPoint {
-    public Vector3f getVector();
+    public Vector3f getVectorLocal();
+    public Vector3f getVectorWorld();
     public Quaternion getQuaternion();
     public void shiftX(float shift);
     public void shiftY(float shift);

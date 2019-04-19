@@ -36,10 +36,7 @@ import mygame.generator.Generator;
 public class Main extends SimpleApplication {
     
     private Node mage_player;
-    private AnimChannel mage_channel;
-    private AnimControl mage_control;
-    private List<Node> spatialsWorld;
-    private CameraNode camNode;
+    public Player player;
     public Generator gen;
     public ControlPath control_path;
     
@@ -87,7 +84,7 @@ public class Main extends SimpleApplication {
         });
         mage_channel = mage_control.createChannel();
         mage_channel.setAnim("ArmatureAction");*/
-        rootNode.attachChild(mage_player);
+        //rootNode.attachChild(mage_player);
         
         List<CellFactory> cells = new ArrayList<>();
         Node spatial = (Node) assetManager.loadModel("Models/Road.j3o");
@@ -153,9 +150,12 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(test_path2);
         rootNode.attachChild(test_path4);
         rootNode.attachChild(Enemy.enemes_node);
-        gen = new Generator(mage_player, cells);
+        player = new Player(mage_player);
+        gen = new Generator(player.w_pos, cells);
         rootNode.attachChild(gen.getWorld());
-        control_path = new ControlPath(mage_player, gen.getPath());
+        
+        control_path = new ControlPath(player, gen.getPath());
+        rootNode.attachChild(player.w_pos);
     }
     
     private void setLight(){
@@ -165,13 +165,13 @@ public class Main extends SimpleApplication {
     }
     
     private void init(){
-        flyCam.setEnabled(true);
+        flyCam.setEnabled(false);
         flyCam.setMoveSpeed(100);
-        /*camNode = new CameraNode("CamNode", cam);
+        CameraNode camNode = new CameraNode("CamNode", cam);
         camNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
-        camNode.setLocalTranslation(new Vector3f(0, 4, -6));
-        camNode.lookAt(new Vector3f(0, 0, 16).add(mage_player.getLocalTranslation()), Vector3f.UNIT_Y);
-        mage_player.attachChild(camNode);*/
+        camNode.setLocalTranslation(new Vector3f(0, 4, 8));
+        camNode.lookAt(new Vector3f(0, 0, -16).add(mage_player.getLocalTranslation()), Vector3f.UNIT_Y);
+        mage_player.attachChild(camNode);
         viewPort.setBackgroundColor(new ColorRGBA(0.8f, 0.8f, 1f, 1));
     }
     
@@ -231,16 +231,12 @@ public class Main extends SimpleApplication {
         
         gen.update();
         
-        control_path.update(tpf*10, 0);
+        control_path.update(tpf*10, shift);
         
         //System.out.println(" Forward: = " + control_path.getForward() + " ForwardPrev: = " + control_path.getForwardPrev()+ " Current: = " + control_path.getCurrent());
         
-        test_path.setLocalTranslation(new Vector3f(mage_player.getLocalTranslation()).add(new Vector3f(control_path.getForwardPrev()).add(control_path.getForward())));
-        test_path.setLocalScale(0.1f);
-        test_path1.setLocalTranslation(new Vector3f(mage_player.getLocalTranslation()).add(control_path.getForwardPrev()));
-        test_path1.setLocalScale(0.1f);
         
-        test_path4.setLocalTranslation(control_path.getNext(shift));
+        test_path4.setLocalTranslation(control_path.getCurrent());
         
         for(Enemy e: Enemy.enemes){
             e.update(tpf);

@@ -15,8 +15,8 @@ import com.jme3.scene.Node;
  * @author anton
  */
 public class PathPointEnd implements IPathPoint{
-    private Node w_pos;
-    private Node l_pos;
+    public Node w_pos;
+    public Node l_pos;
     private Node end_pos;
     private static final String TAG = "PathPointEnd: ";
     
@@ -39,12 +39,6 @@ public class PathPointEnd implements IPathPoint{
         w_pos.attachChild(l_pos);
         w_pos.setLocalTransform(pp.w_pos.getLocalTransform());
         
-    }
-    
-    @Override
-    public Vector3f getVector(){
-        //System.out.println(TAG + this + " " + "Get Vector");
-        return l_pos.getWorldTranslation();
     }
     
     @Override
@@ -81,6 +75,16 @@ public class PathPointEnd implements IPathPoint{
                 w_pos.getLocalTransform().clone().combineWithParent(pos.getLocalTransform()),
                 new_end_pos);
         return nppe;
+    }
+
+    @Override
+    public Vector3f getVectorLocal() {
+        return l_pos.getWorldTranslation();
+    }
+
+    @Override
+    public Vector3f getVectorWorld() {
+        return w_pos.getWorldTranslation();
     }
     
 }
