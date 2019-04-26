@@ -150,7 +150,14 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(test_path2);
         rootNode.attachChild(test_path4);
         rootNode.attachChild(Enemy.enemes_node);
-        player = new Player(mage_player);
+        
+        
+        CameraNode camNode = new CameraNode("CamNode", cam);
+        camNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
+        camNode.setLocalTranslation(new Vector3f(0, 4, 8));
+        camNode.lookAt(new Vector3f(0, 0, -16).add(mage_player.getLocalTranslation()), Vector3f.UNIT_Y);
+        
+        player = new Player(mage_player, camNode);
         gen = new Generator(player.w_pos, cells);
         rootNode.attachChild(gen.getWorld());
         
@@ -167,11 +174,8 @@ public class Main extends SimpleApplication {
     private void init(){
         flyCam.setEnabled(false);
         flyCam.setMoveSpeed(100);
-        CameraNode camNode = new CameraNode("CamNode", cam);
-        camNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
-        camNode.setLocalTranslation(new Vector3f(0, 4, 8));
-        camNode.lookAt(new Vector3f(0, 0, -16).add(mage_player.getLocalTranslation()), Vector3f.UNIT_Y);
-        mage_player.attachChild(camNode);
+        
+        //mage_player.attachChild(camNode);
         viewPort.setBackgroundColor(new ColorRGBA(0.8f, 0.8f, 1f, 1));
     }
     

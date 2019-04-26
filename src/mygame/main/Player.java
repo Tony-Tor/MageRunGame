@@ -5,8 +5,9 @@
  */
 package mygame.main;
 
-import com.jme3.math.Transform;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.CameraNode;
 import com.jme3.scene.Node;
 
 /**
@@ -15,12 +16,26 @@ import com.jme3.scene.Node;
  */
 public class Player {
     public Node w_pos;
+    public Node w_rot;
+    public Node cam;
     public Node player;
     
-    public Player(Node player){
+    public Player(Node player, CameraNode cam){
         this.w_pos = new Node();
+        this.w_rot = new Node();
+        this.cam = new Node();
+        this.cam.attachChild(cam);
+        this.w_pos.attachChild(this.w_rot);
+        this.w_pos.attachChild(this.cam);
         this.player = player;
-        w_pos.attachChild(this.player);
+        this.w_rot.attachChild(this.player);
+    }
+    
+    public void update(float tpf){
+        Quaternion q1 = cam.getLocalRotation();
+        Quaternion q2 = w_rot.getLocalRotation();
+        Quaternion res = q1.slerp(q1, q2, tpf/2);
+        cam.setLocalRotation(res);
     }
     
     public void shiftX(float shift){
