@@ -26,7 +26,7 @@ public class ControlPath extends Node{
         this.prev = new Tree(null, pp);
         this.player = player;
     }
-    
+    private float check = 0;
     public void update(float tpf, float shift){
         
         for(Tree<IPathPoint> tpp: next.getAllTree()){
@@ -45,11 +45,23 @@ public class ControlPath extends Node{
         
         Vector3f direction = vec_path_next_local.add(vec_player_local.negate());
         direction.normalizeLocal();
-        direction.multLocal(tpf);
         
+        float interpolation_param;
+        if(check == 0){
+            direction.multLocal(tpf);
+            interpolation_param = tpf;
+        }
+        else{
+            direction.multLocal(check);
+            interpolation_param = check;
+            check = 0;
+        }
+        player.update(interpolation_param, prev.getContent().getQuaternion(), next.getContent().getQuaternion());
         player.w_pos.move(direction);
         
+        
         if(len <= 0){
+            check = Math.abs(len);
             Quaternion quat = next.getContent().getQuaternion();
             quat.negate();
             
@@ -61,7 +73,8 @@ public class ControlPath extends Node{
             player.w_rot.setLocalRotation(quat);
             player.w_pos.setLocalTranslation(prev.getContent().getVectorWorld());
         }
-        player.update(tpf);
+        
+        
     }
     
     public Vector3f getCurrent(){

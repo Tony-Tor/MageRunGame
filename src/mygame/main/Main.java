@@ -162,7 +162,7 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(gen.getWorld());
         
         control_path = new ControlPath(player, gen.getPath());
-        rootNode.attachChild(player.w_pos);
+        rootNode.attachChild(player);
     }
     
     private void setLight(){
@@ -240,7 +240,7 @@ public class Main extends SimpleApplication {
         //System.out.println(" Forward: = " + control_path.getForward() + " ForwardPrev: = " + control_path.getForwardPrev()+ " Current: = " + control_path.getCurrent());
         
         
-        test_path4.setLocalTranslation(control_path.getCurrent());
+        //test_path4.setLocalTranslation(control_path.getCurrent());
         
         for(Enemy e: Enemy.enemes){
             e.update(tpf);
